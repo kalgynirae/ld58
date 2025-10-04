@@ -1,16 +1,16 @@
 #!/bin/bash
 
 if ! mkdir -vp out; then
+  echo "mkdir failed" 2>&1
   exit 1
 fi
 rm out/*
 
-trap 'kill %1' EXIT
-trap 'kill %2' EXIT
-python3 -m http.server -d out/ |& grep -v '\<HEAD\>' &
+trap 'kill %1 %2' EXIT
+python3 -m http.server -d out/ &
 tsc -w &
 
-while true; do
+while sleep 0.1; do
   files=(
     img/*
     lib/*
@@ -18,5 +18,8 @@ while true; do
     src/style.css
   )
   cp -vt out "${files[@]}"
-  inotifywait -e close_write -rq src/
+  if ! inotifywait -e close_write -rq src/; then
+    echo "inotifywait failed" 2>&1
+    exit 1
+  fi
 done

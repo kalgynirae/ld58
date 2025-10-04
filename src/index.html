@@ -2,18 +2,19 @@
 <html>
 	<head>
 		<title>Untitled Kerning Game</title>
-		<link rel=stylesheet href=out/style.css>
-		<script defer src=out/game.js></script>
+		<link rel=stylesheet href=style.css>
+		<script defer src=game.js></script>
+		<script defer src=live.js></script>
 	</head>
 	<body>
 		<div class=game>
 			<h1 class=title>Untitled Kerning Game</h1>
 			<div class=horizontal-layout>
 				<div class=game-window>
-					<p class=moveable>test</p>
-					<p class=moveable>test2</p>
-					<div class=message>
-					</div>
+					<div class=message></div>
+					<span class=moveable>test</span>
+					<span class=moveable>test2</span>
+					<img class=moveable draggable=false src=a.svg data-x=5 data-y=5>
 				</div>
 				<div class=collection>
 					<h2>Collection</h2>

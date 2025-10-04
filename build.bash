@@ -1,6 +1,11 @@
 #!/bin/bash
+files=(
+  img/*
+  lib/*
+  src/index.html
+  src/style.css
+)
+
 set -x
-rm out/*
 tsc
-cp -t out src/style.css
-cp -t out src/index.html
+cp -t out "${files[@]}"

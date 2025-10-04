@@ -3,6 +3,7 @@
 	padding: 0;
 }
 body {
+	background-color: black;
 	padding: 0.5rem;
 }
 .game {
@@ -22,11 +23,21 @@ body {
 }
 .game-window {
   position: relative;
-	background-color: lightgray;
+	background-color: gray;
 	aspect-ratio: 16/9;
+	width: 800px;
 }
 
 .moveable {
+	position: absolute;
+	background-color: lightblue;
 	cursor: pointer;
 	user-select: none;
+
+	img& {
+		display: block;
+	}
+	span& {
+		display: inline-block;
+	}
 }

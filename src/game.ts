@@ -4,7 +4,7 @@ type LevelID = string;
 class Level {
   id: LevelID;
   element: HTMLElement;
-  entities: Map<LevelID, Entity> = new Map();
+  entities: Map<EntityID, Entity> = new Map();
 
   constructor(id: LevelID, e: HTMLElement) {
     this.id = id;
@@ -52,7 +52,7 @@ class Entity {
     const newX = this.posX + dx;
     const newY = this.posY + dy;
     const newRect = this.rect(newX, newY);
-    for (let m of current_level!.entities.values()) {
+    for (let m of current_entities.values()) {
       if (m === this) continue;
       if (newRect.intersects(m.rect())) return false;
     }
@@ -94,16 +94,19 @@ const gameWindow = document.querySelector(".game-window") as HTMLElement;
 let persistent_entities: Map<EntityID, Entity> = new Map();
 let levels: Map<LevelID, Level> = new Map();
 let current_level: Level | null = null;
+let current_entities: Map<EntityID, Entity> = new Map();
 
 function activate_level(level_id: LevelID) {
   if (current_level != null) {
     current_level.element.style.display = "none";
   }
   current_level = null;
+  current_entities = new Map(persistent_entities);
 
   const new_level = levels.get(level_id)!;
   new_level.entities.forEach((ent) => {
     ent.reset();
+    current_entities.set(ent.id, ent);
   });
   new_level.element.style.display = "block";
   current_level = new_level;
@@ -151,8 +154,8 @@ function activate_level(level_id: LevelID) {
 
   document.addEventListener("mousedown", (event: MouseEvent) => {
     const e = event.target as HTMLElement;
-    if (e.dataset.id && current_level && current_level.entities.has(e.dataset.id)) {
-      let entity = current_level.entities.get(e.dataset.id)!;
+    if (e.dataset.id && current_entities.has(e.dataset.id)) {
+      let entity = current_entities.get(e.dataset.id)!;
       if (!entity.moveable) return;
       active = entity;
       offsetX = event.pageX - active.posX;

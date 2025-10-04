@@ -1,0 +1,32 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	padding: 0.5rem;
+}
+.game {
+	display: relative;
+	margin-block: 1rem;
+}
+.title {
+	display: none;
+}
+.horizontal-layout {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	column-gap: 1rem;
+}
+.collection {
+	display: none;
+}
+.game-window {
+  position: relative;
+	background-color: lightgray;
+	aspect-ratio: 16/9;
+}
+
+.moveable {
+	cursor: pointer;
+	user-select: none;
+}

@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "outDir": "out",
+    "target": "es2024",
+    "strict": true,
+  },
+}

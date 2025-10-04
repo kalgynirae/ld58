@@ -91,6 +91,7 @@ class Rect {
 }
 
 const gameWindow = document.querySelector(".game-window") as HTMLElement;
+let persistent_entities: Map<EntityID, Entity> = new Map();
 let levels: Map<LevelID, Level> = new Map();
 let current_level: Level | null = null;
 
@@ -111,6 +112,17 @@ function activate_level(level_id: LevelID) {
 // Load levels and entities
 {
   let next_entity_id = 1;
+
+  // Persistent entities
+  document.querySelectorAll(".persistent").forEach((persistent) => {
+    persistent.querySelectorAll("*").forEach((element) => {
+      let ent = new Entity(String(next_entity_id++), element as HTMLElement);
+      ent.reset();
+      persistent_entities.set(ent.id, ent);
+    });
+  });
+
+  // Levels (and level entities)
   document.querySelectorAll("section").forEach((section) => {
     const level_id = section.id.substring("level".length);
     let level = new Level(level_id, section);

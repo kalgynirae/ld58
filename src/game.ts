@@ -1,6 +1,7 @@
 type EntityID = string;
 type LevelID = string;
 
+
 class Level {
   id: LevelID;
   element: HTMLElement;

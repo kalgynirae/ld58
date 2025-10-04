@@ -4,7 +4,6 @@
 		<title>Untitled Kerning Game</title>
 		<link rel=stylesheet href=style.css>
 		<script defer src=game.js></script>
-		<script defer src=live.js></script>
 	</head>
 	<body>
 		<div class=game>
@@ -12,10 +11,17 @@
 			<div class=horizontal-layout>
 				<div class=game-window>
 					<div class=message></div>
-					<span class=moveable>test</span>
-					<span class=moveable>test2</span>
-					<img class=moveable draggable=false src=a.svg data-x=5 data-y=5>
-					<img class=moveable draggable=false src=a.svg data-x=205 data-y=5>
+					<section id=level0>
+						<span data-x=50>test</span>
+						<span class=moveable>test2</span>
+						<img class=moveable src=a.svg data-x=5 data-y=35>
+						<img class=moveable src=a.svg data-x=205 data-y=5>
+					</section>
+					<section id=level1>
+						<img class=moveable src=a.svg data-x=5 data-y=35>
+						<img class=moveable src=a.svg data-x=205 data-y=5>
+						<img src=a.svg data-x=405 data-y=300>
+					</section>
 				</div>
 				<div class=collection>
 					<h2>Collection</h2>
@@ -23,6 +29,12 @@
 						<li>item 1</li>
 					</ul>
 				</div>
+			</div>
+			<div class=debug>
+				<fieldset>
+					<legend>Debug controls</legend>
+					Level: <input id=levelnumber type=number style="width: 3em" value=1>
+				</fieldset>
 			</div>
 		</div>
 	</body>

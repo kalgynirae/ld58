@@ -29,8 +29,10 @@
 				background-color: gray;
 				aspect-ratio: 16/9;
 			}
-			#test {
-				transform: translate(5px, 20px);
+			
+			.moveable {
+				cursor: pointer;
+				user-select: none;
 			}
 		</style>
 	</head>
@@ -39,7 +41,8 @@
 			<h1 class=title>Untitled Kerning Game</h1>
 			<div class=horizontal-layout>
 				<div class=game-window>
-					<p id=test>test</p>
+					<p class=moveable>test</p>
+					<p class=moveable>test2</p>
 					<div class=message>
 					</div>
 				</div>
@@ -51,6 +54,6 @@
 				</div>
 			</div>
 		</div>
-		<script src="game.js"></script>
+		<script src="out/game.js"></script>
 	</body>
 </html>

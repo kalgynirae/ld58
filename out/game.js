@@ -1,26 +1,28 @@
 "use strict";
-document.querySelectorAll(".moveable").forEach((element) => {
-    const e = element;
-    var startX = null;
-    var startY = null;
-    e.addEventListener("mousedown", (event) => {
-        startX = event.screenX;
-        startY = event.screenY;
-    });
-    e.addEventListener("mouseup", (_event) => {
-        startX = null;
-        startY = null;
-    });
-    e.addEventListener("mousemove", (event) => {
-        if (startX != null && startY != null) {
-            const x = event.screenX - startX;
-            const y = event.screenY - startY;
-            e.style.transform = `translate(${x}px, ${y}px)`;
-        }
-    });
-});
 var activeElement = null;
+var startX = null;
+var startY = null;
 document.addEventListener("mousedown", (event) => {
-    activeElement = event.target;
-    console.log(`active element: ${activeElement}`);
+    const e = event.target;
+    if (e.classList.contains("moveable")) {
+        activeElement = event.target;
+        startX = event.screenX - Number(activeElement.dataset.offsetX ?? 0);
+        startY = event.screenY - Number(activeElement.dataset.offsetY ?? 0);
+    }
+    console.log(`activeElement: ${activeElement}`);
+});
+document.addEventListener("mouseup", (_event) => {
+    activeElement = null;
+    startX = null;
+    startY = null;
+    console.log(`activeElement: ${activeElement}`);
+});
+document.addEventListener("mousemove", (event) => {
+    if (activeElement != null) {
+        const x = event.screenX - startX;
+        const y = event.screenY - startY;
+        activeElement.dataset.offsetX = String(x);
+        activeElement.dataset.offsetY = String(y);
+        activeElement.style.transform = `translate(${x}px, ${y}px)`;
+    }
 });

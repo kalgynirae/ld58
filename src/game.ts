@@ -115,6 +115,12 @@ class Rect {
     return !(this.x1 > other.x2 || this.x2 < other.x1 || this.y1 > other.y2 || this.y2 < other.y1);
   }
 
+  middlePointIntersects(other: Rect): boolean {
+    const middleX = (this.x1 + this.x2) / 2;
+    const middleY = (this.y1 + this.y2) / 2;
+    return !(middleX > other.x2 || middleX < other.x1 || middleY > other.y2 || middleY < other.y1);
+  }
+
   toString() {
     return `Rect(${this.x1}, ${this.y1}, ${this.x2}, ${this.y2})`;
   }
@@ -267,7 +273,7 @@ function activate_level(level_id: LevelID) {
   document.addEventListener("mouseup", (event: MouseEvent) => {
     let removedAnEntity = false;
     if (active != null) {
-      if (active.rect().intersects(target!.rect())) {
+      if (active.rect().middlePointIntersects(target!.rect())) {
         if (active.element.classList.contains("title-trash")) {
           active.element.style.visibility = "hidden";
         } else {

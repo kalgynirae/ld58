@@ -175,7 +175,7 @@ function activate_level(level_id: LevelID) {
       let ent = new Entity(String(next_entity_id++), element as HTMLElement);
       ent.reset();
       level.entities.set(ent.id, ent);
-      if (ent.moveable) {
+      if (ent.moveable && level_id !== "0") {
         totalCount += 1;
       }
     });

@@ -19,6 +19,12 @@
 					<img class=nonsolid src=trashfront-x534y448.png data-x=534 data-y=448 style="z-index:2;">
 					<div class=target data-x=560 data-y=450 style="width:230px;height:145px;"></div>
 				</div>
+				<section id=level0>
+					<div class=moveable data-x=400 data-y=200>I AM A DEBUG SCREEN</div>
+					<img class=moveable src=a.svg data-x=100 data-y=100>
+					<img class=moveable src=a.svg data-x=200 data-y=200>
+					<img src=a.svg data-x=300 data-y=300>
+				</section>
 				<section id=level1>
 					<img class=nonsolid src=titlesign-x58y105.png data-x=58 data-y=105>
 					<img class=moveable src=startsign-x193y376.png data-x=193 data-y=376>
@@ -32,7 +38,7 @@
 			<div class=debug>
 				<fieldset>
 					<legend>Debug controls</legend>
-					<div>Level: <input id=levelnumber type=number style="width: 3em" value=1></div>
+					<div>Level: <input id=levelnumber type=number style="width: 3em" value=1 min=0></div>
 					<label><div>Show walls <input type="checkbox" id="showWalls" checked></div></label>
 					<label><div>Show target <input type="checkbox" id="showTarget"></div></label>
 					<div>X: <span id=posX>0</span></div>

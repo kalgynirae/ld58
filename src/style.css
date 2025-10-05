@@ -87,6 +87,11 @@ body::after{
 		cursor: pointer;
 	}
 
+	img&.scaleup {
+		transform: scale(3);
+		image-rendering: pixelated;
+	}
+
 	&.wall {
 		background-color: red;
 		z-index: 3;

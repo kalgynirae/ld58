@@ -59,10 +59,7 @@ class Entity {
     for (let m of current_entities.values()) {
       if (m === this) continue;
       if (!m.solid) continue;
-      if (newRect.intersects(m.rect())) {
-        // debugger;
-        return false;
-      }
+      if (newRect.intersects(m.rect())) return false;
     }
     this.moveTo(newX, newY);
     return true;
@@ -247,11 +244,10 @@ function activate_level(level_id: LevelID) {
 
     if (removedAnEntity) {
       for (let m of current_entities.values()) {
-        if (m.moveable) {
+        if (m.moveable && !m.element.classList.contains("title-trash")) {
           return;
         }
       }
-      // TODO: check corner case for last level
       activate_level(String(parseInt(current_level!.id) + 1));
       // TODO: level transition animation?
     }

@@ -51,10 +51,10 @@ body {
 	image-rendering: pixelated;
 }
 
-/* Preload backgrounds for later levels */
+/* Preload backgrounds for levels */
 body::after{
    position:absolute; width:0; height:0; overflow:hidden; z-index:-1;
-   content:url('HouseBackground.png') url('RiverBackground.png');
+   content:url('CityBackground.png') url('HouseBackground.png') url('RiverBackground.png');
 }
 
 .entity {

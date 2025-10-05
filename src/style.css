@@ -37,6 +37,20 @@ body {
 	margin-inline: auto;
 }
 
+.click-to-start {
+	position: relative;
+	background-color: rgb(0 0 0 / 0.8);
+	color: white;
+	font-weight: bold;
+	font-size: 1.5em;
+	cursor: pointer;
+	width: 800px;
+	height: 600px;
+	align-content: center;
+	text-align: center;
+	z-index: 10;
+}
+
 .title-screen {
 	background-image: url('CityBackground.png');
 }

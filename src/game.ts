@@ -1,3 +1,28 @@
+enum GameState {
+  ClickToStart,
+  TitleScreen,
+  Level1,
+  Level2,
+  NeutralEnding,
+  Level2Exploded,
+  TrueEnding,
+};
+let gameState = GameState.ClickToStart;
+
+function draggingAllowed(): boolean {
+  switch (gameState) {
+    case GameState.TitleScreen:
+    case GameState.Level1:
+    case GameState.Level2:
+    case GameState.Level2Exploded:
+      return true;
+    case GameState.ClickToStart:
+    case GameState.NeutralEnding:
+    case GameState.TrueEnding:
+      return false;
+  }
+}
+
 type EntityID = string;
 type LevelID = string;
 
@@ -223,6 +248,7 @@ function activate_level(level_id: LevelID) {
   let offsetY: number | null = null;
 
   document.addEventListener("mousedown", (event: MouseEvent) => {
+    if (!draggingAllowed()) return;
     const e = event.target as HTMLElement;
     if (e.dataset.id && current_entities.has(e.dataset.id)) {
       let entity = current_entities.get(e.dataset.id)!;
@@ -291,3 +317,9 @@ function activate_level(level_id: LevelID) {
     posYElement.textContent = String(event.pageY - gameWindowY);
   });
 }
+
+// State transitions
+document.querySelector(".click-to-start").addEventListener("click", (e) => {
+  e.target.style.display = "none";
+  gameState = GameState.TitleScreen;
+});

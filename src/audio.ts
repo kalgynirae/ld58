@@ -1,27 +1,33 @@
-const context = new AudioContext();
+const offlineContext = new OfflineAudioContext(2, 1, 44100);
+let audioContext: AudioContext | null = null;
 let music: AudioBuffer | null = null;
 let yoink: AudioBuffer | null = null;
 
 async function load(path: string): Promise<AudioBuffer> {
   const response = await fetch(path);
   const buffer = await response.arrayBuffer();
-  return await context.decodeAudioData(buffer);
+  return await offlineContext.decodeAudioData(buffer);
 }
 
 async function loadMusicAndSounds() {
-  music = await load("audio/music.mp3");
-  yoink = await load("audio/yoink.mp3");
+  music = await load("music.mp3");
+  // yoink = await load("yoink.mp3");
 }
 
-async function startMusic() {
-  await context.resume();
-  const gainNode = context.createGain();
+function initAudio() {
+  audioContext = new AudioContext();
+}
+
+function startMusic() {
+  const gainNode = audioContext!.createGain();
   gainNode.gain.value = 0.5;
-  gainNode.connect(context.destination);
-  const musicNode = new AudioBufferSourceNode(context, {
+  gainNode.connect(audioContext!.destination);
+  const musicNode = new AudioBufferSourceNode(audioContext!, {
     buffer: music,
     loop: true,
   });
   musicNode.connect(gainNode);
   musicNode.start();
 }
+
+const audioLoading = loadMusicAndSounds();

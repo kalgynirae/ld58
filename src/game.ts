@@ -321,7 +321,9 @@ function activate_level(level_id: LevelID) {
 // State transitions
 const clickToStart = document.querySelector(".click-to-start") as HTMLElement;
 clickToStart.addEventListener("click", async (e) => {
+  await audioLoading;
+  initAudio();
+  startMusic();
   clickToStart.style.display = "none";
-  await startMusic();
   gameState = GameState.TitleScreen;
 });

@@ -285,7 +285,7 @@ function activate_level(level_id: LevelID) {
         const collectedCountElement = document.querySelector("#collectedCount") as HTMLElement;
         collectedCountElement.textContent = String(collectedCount);
       }
-      playSound(drop!);
+      playSound(removedAnEntity ? collect! : drop!);
     }
 
     active = null;

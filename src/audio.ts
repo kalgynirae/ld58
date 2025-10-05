@@ -1,7 +1,9 @@
 const offlineContext = new OfflineAudioContext(2, 1, 44100);
 let audioContext: AudioContext | null = null;
 let music: AudioBuffer | null = null;
+let collect: AudioBuffer | null = null;
 let drop: AudioBuffer | null = null;
+let fire: AudioBuffer | null = null;
 let yoink: AudioBuffer | null = null;
 
 async function load(path: string): Promise<AudioBuffer> {
@@ -12,7 +14,9 @@ async function load(path: string): Promise<AudioBuffer> {
 
 async function loadMusicAndSounds() {
   music = await load("music.mp3");
+  collect = await load("collect.wav");
   drop = await load("drop.wav");
+  fire = await load("fire.wav");
   yoink = await load("yoink.wav");
 }
 

@@ -99,6 +99,9 @@ let levels: Map<LevelID, Level> = new Map();
 let current_level: Level | null = null;
 let current_entities: Map<EntityID, Entity> = new Map();
 let target: Entity | null = null;
+let collectedCount: number = 0;
+// account for bonus moveable object
+let totalCount: number = 1;
 
 function activate_level(level_id: LevelID) {
   if (current_level != null) {
@@ -148,8 +151,14 @@ function activate_level(level_id: LevelID) {
       let ent = new Entity(String(next_entity_id++), element as HTMLElement);
       ent.reset();
       level.entities.set(ent.id, ent);
+      if (ent.moveable) {
+        totalCount += 1;
+      }
     });
   });
+
+  const totalCountElement = document.querySelector("#totalCount") as HTMLElement;
+  totalCountElement.textContent = String(totalCount);
 
   const level_number_element = document.querySelector("#levelnumber") as HTMLInputElement;
   level_number_element.addEventListener("change", (event: Event) => {
@@ -195,7 +204,9 @@ function activate_level(level_id: LevelID) {
         active.element.style.display = "none";
         current_entities.delete(active.id);
         removedAnEntity = true;
-        // TODO: increase trash counter
+        collectedCount += 1;
+        const collectedCountElement = document.querySelector("#collectedCount") as HTMLElement;
+        collectedCountElement.textContent = String(collectedCount);
       }
     }
 

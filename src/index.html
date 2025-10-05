@@ -4,22 +4,24 @@
 		<title>This Game Is Trash</title>
 		<link rel=stylesheet href=style.css>
 		<script defer src=game.js></script>
+		<script src=live.js></script>
 	</head>
 	<body>
 		<div class=game>
 			<h1 class=title>This Game Is <span class="title-trash moveable">Trash</span></h1>
 			<div class=game-window>
 				<div class=persistent>
-					<div class=wall data-x=0 data-y=0 style="width: 800px;height: 1px;"></div>
+					<div class=wall data-x=0 data-y=0 style="width:800px;height:1px;"></div>
 					<div class=wall data-x=0 data-y=599 style="width:640px;height:1px;"></div>
 					<div class=wall data-x=0 data-y=0 style="width:1px;height:600px;"></div>
 					<div class=wall data-x=799 data-y=0 style="width:1px;height:600px;"></div>
-					<img alt=target class=target width=40 height=40 data-x=700 data-y=500>
+					<img class=nonsolid src=trashback-x540y382.png data-x=540 data-y=382>
+					<img class=nonsolid src=trashfront-x534y448.png data-x=534 data-y=448 style="z-index:2;">
+					<div class=target data-x=560 data-y=450 style="width:230px;height:145px;"></div>
 				</div>
 				<section id=level1>
-					<img class=moveable src=a.svg data-x=20 data-y=35>
-					<img class=moveable src=a.svg data-x=205 data-y=25>
-					<img src=a.svg data-x=405 data-y=300>
+					<img class=nonsolid src=titlesign-x58y105.png data-x=58 data-y=105>
+					<img class=moveable src=startsign-x193y376.png data-x=193 data-y=376>
 				</section>
 				<section id=level2>
 					<img class=moveable src=a.svg data-x=100 data-y=100>
@@ -32,6 +34,7 @@
 					<legend>Debug controls</legend>
 					<div>Level: <input id=levelnumber type=number style="width: 3em" value=1></div>
 					<label><div>Show walls <input type="checkbox" id="showWalls" checked></div></label>
+					<label><div>Show target <input type="checkbox" id="showTarget"></div></label>
 					<div>X: <span id=posX>0</span></div>
 					<div>Y: <span id=posY>0</span></div>
 					<div>Collected: <span id=collectedCount>0</span> / <span id=totalCount>0</span></div>

@@ -64,6 +64,8 @@ body {
 
 	&.target {
 		background-color: green;
+		z-index: 3;
+		visibility: hidden;
 	}
 }
 

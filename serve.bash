@@ -7,7 +7,7 @@ fi
 rm out/*
 
 trap 'kill %1 %2' EXIT
-python3 -m http.server -d out/ &
+python3 -m http.server -d out/ |& grep -v '\<HEAD\>' &
 tsc -w |& sed 's/\o033\[2J\o033\[3J\o033\[H//g' &
 
 while sleep 0.1; do

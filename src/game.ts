@@ -198,6 +198,14 @@ function activate_level(level_id: LevelID) {
       (element as HTMLElement).style.visibility = visibility;
     });
   });
+
+  const showTargetElement = document.querySelector("#showTarget") as HTMLInputElement;
+  showTargetElement.addEventListener("change", (_event: Event) => {
+    const visibility = showTargetElement.checked ? "visible" : "hidden";
+    document.querySelectorAll(".target").forEach((element) => {
+      (element as HTMLElement).style.visibility = visibility;
+    });
+  });
 }
 
 // Set up dragging

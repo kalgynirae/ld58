@@ -38,6 +38,10 @@ body {
 	margin-inline: auto;
 }
 
+.title-screen {
+  background-image: url('CityBackground.png');
+}
+
 .entity {
 	position: absolute;
 	background-color: red;

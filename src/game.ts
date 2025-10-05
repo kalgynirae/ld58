@@ -127,6 +127,12 @@ function activate_level(level_id: LevelID) {
   if (level_number_element.value !== new_level.id) {
     level_number_element.value = new_level.id;
   }
+
+  if (new_level.id == "1") {
+    gameWindow.classList.add("title-screen");
+  } else {
+    gameWindow.classList.remove("title-screen");
+  }
 }
 
 // Load levels and entities

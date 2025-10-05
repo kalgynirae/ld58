@@ -44,7 +44,6 @@ body {
 
 .entity {
 	position: absolute;
-	background-color: red;
 	cursor: default;
 	user-select: none;
 
@@ -56,8 +55,11 @@ body {
 	}
 
 	&.moveable {
-		background-color: lightblue;
 		cursor: pointer;
+	}
+
+	&.wall {
+		background-color: red;
 	}
 
 	&.target {

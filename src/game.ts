@@ -129,6 +129,7 @@ class Rect {
 const gameWindow = document.querySelector(".game-window") as HTMLElement;
 const gameWindowX = gameWindow.getBoundingClientRect().x;
 const gameWindowY = gameWindow.getBoundingClientRect().y;
+const fireElement = document.querySelector(".fire") as HTMLElement;
 let persistent_entities: Map<EntityID, Entity> = new Map();
 let levels: Map<LevelID, Level> = new Map();
 let currentLevel: Level | null = null;

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "out",
+    "outFile": "out/combined.js",
     "target": "es2024",
     "strict": true,
   },

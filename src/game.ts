@@ -157,6 +157,14 @@ function activate_level(level_id: LevelID) {
   });
 
   activate_level(level_number_element.value);
+
+  const showWallsElement = document.querySelector("#showWalls") as HTMLInputElement;
+  showWallsElement.addEventListener("change", (_event: Event) => {
+    const visibility = showWallsElement.checked ? "visible" : "hidden";
+    document.querySelectorAll(".wall").forEach((element) => {
+      (element as HTMLElement).style.visibility = visibility;
+    });
+  });
 }
 
 // Set up dragging

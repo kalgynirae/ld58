@@ -11,10 +11,10 @@
 			<div class=game-window>
 				<div class=message></div>
 				<div class=persistent>
-					<img alt=wall width=800 height=20 data-x=0 data-y=0>
-					<img alt=wall width=640 height=20 data-x=0 data-y=580>
-					<img alt=wall width=20 height=600 data-x=0 data-y=0>
-					<img alt=wall width=20 height=600 data-x=780 data-y=0>
+					<div class=wall data-x=0 data-y=0 style="width: 800px;height: 1px;"></div>
+					<div class=wall data-x=0 data-y=599 style="width:640px;height:1px;"></div>
+					<div class=wall data-x=0 data-y=0 style="width:1px;height:600px;"></div>
+					<div class=wall data-x=799 data-y=0 style="width:1px;height:600px;"></div>
 					<img alt=target class=target width=40 height=40 data-x=700 data-y=500>
 				</div>
 				<section id=level0>
@@ -37,9 +37,10 @@
 			<div class=debug>
 				<fieldset>
 					<legend>Debug controls</legend>
-					Level: <input id=levelnumber type=number style="width: 3em" value=1>
-					X: <span id=posX style="width: 3em">0</span>
-					Y: <span id=posY style="width: 3em">0</span>
+					<div>Level: <input id=levelnumber type=number style="width: 3em" value=1></div>
+					<div>Show walls <input type="checkbox" id="showWalls" checked></div>
+					<div>X: <span id=posX style="width: 3em">0</span></div>
+					<div>Y: <span id=posY style="width: 3em">0</span></div>
 				</fieldset>
 			</div>
 		</div>

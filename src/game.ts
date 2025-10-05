@@ -256,6 +256,7 @@ function activate_level(level_id: LevelID) {
       active = entity;
       offsetX = event.pageX - active.posX;
       offsetY = event.pageY - active.posY;
+      playSound(yoink!);
       // console.log(`active=${active.id} offsetX=${offsetX} offsetY=${offsetY}`);
       // for (let m of moveables.values()) {
       //   console.log(`id=${m.id}  rect=${m.rect()}`);
@@ -278,6 +279,7 @@ function activate_level(level_id: LevelID) {
         const collectedCountElement = document.querySelector("#collectedCount") as HTMLElement;
         collectedCountElement.textContent = String(collectedCount);
       }
+      playSound(drop!);
     }
 
     active = null;

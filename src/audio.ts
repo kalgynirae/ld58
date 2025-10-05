@@ -1,6 +1,7 @@
 const offlineContext = new OfflineAudioContext(2, 1, 44100);
 let audioContext: AudioContext | null = null;
 let music: AudioBuffer | null = null;
+let drop: AudioBuffer | null = null;
 let yoink: AudioBuffer | null = null;
 
 async function load(path: string): Promise<AudioBuffer> {
@@ -11,7 +12,8 @@ async function load(path: string): Promise<AudioBuffer> {
 
 async function loadMusicAndSounds() {
   music = await load("music.mp3");
-  // yoink = await load("yoink.mp3");
+  drop = await load("drop.wav");
+  yoink = await load("yoink.wav");
 }
 
 function initAudio() {
@@ -20,7 +22,7 @@ function initAudio() {
 
 function startMusic() {
   const gainNode = audioContext!.createGain();
-  gainNode.gain.value = 0.5;
+  gainNode.gain.value = 0.2;
   gainNode.connect(audioContext!.destination);
   const musicNode = new AudioBufferSourceNode(audioContext!, {
     buffer: music,
@@ -28,6 +30,17 @@ function startMusic() {
   });
   musicNode.connect(gainNode);
   musicNode.start();
+}
+
+function playSound(buf: AudioBuffer) {
+  const gainNode = audioContext!.createGain();
+  gainNode.gain.value = 1.0;
+  gainNode.connect(audioContext!.destination);
+  const soundNode = new AudioBufferSourceNode(audioContext!, {
+    buffer: buf,
+  });
+  soundNode.connect(gainNode);
+  soundNode.start();
 }
 
 const audioLoading = loadMusicAndSounds();

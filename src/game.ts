@@ -99,6 +99,8 @@ class Rect {
 }
 
 const gameWindow = document.querySelector(".game-window") as HTMLElement;
+const gameWindowX = gameWindow.getBoundingClientRect().x;
+const gameWindowY = gameWindow.getBoundingClientRect().y;
 let persistent_entities: Map<EntityID, Entity> = new Map();
 let levels: Map<LevelID, Level> = new Map();
 let current_level: Level | null = null;
@@ -273,7 +275,7 @@ function activate_level(level_id: LevelID) {
 
     const posXElement = document.querySelector("#posX") as HTMLElement;
     const posYElement = document.querySelector("#posY") as HTMLElement;
-    posXElement.textContent = String(event.pageX);
-    posYElement.textContent = String(event.pageY);
+    posXElement.textContent = String(event.pageX - gameWindowX);
+    posYElement.textContent = String(event.pageY - gameWindowY);
   });
 }

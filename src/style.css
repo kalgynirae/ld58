@@ -78,6 +78,7 @@ body::after{
 
 	img& {
 		display: block;
+		image-rendering: pixelated;
 	}
 	span& {
 		display: inline-block;
@@ -85,11 +86,6 @@ body::after{
 
 	&.moveable {
 		cursor: pointer;
-	}
-
-	img&.scaleup {
-		transform: scale(3);
-		image-rendering: pixelated;
 	}
 
 	&.wall {

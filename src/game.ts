@@ -20,6 +20,7 @@ class Entity {
   posX: number = 0;
   posY: number = 0;
   moveable: boolean;
+  target: boolean;
   solid: boolean;
 
   constructor(id: string, e: HTMLElement) {
@@ -28,7 +29,8 @@ class Entity {
     this.originX = Number(e.dataset.x ?? 0);
     this.originY = Number(e.dataset.y ?? 0);
     this.moveable = e.classList.contains("moveable");
-    this.solid = !e.classList.contains("nonsolid");
+    this.target = e.classList.contains("target");
+    this.solid = !e.classList.contains("nonsolid") && !this.target;
 
     e.dataset.id = id;
     e.classList.add("entity");
@@ -54,6 +56,7 @@ class Entity {
     const newRect = this.rect(newX, newY);
     for (let m of current_entities.values()) {
       if (m === this) continue;
+      if (!m.solid) continue;
       if (newRect.intersects(m.rect())) return false;
     }
     this.moveTo(newX, newY);
@@ -95,6 +98,7 @@ let persistent_entities: Map<EntityID, Entity> = new Map();
 let levels: Map<LevelID, Level> = new Map();
 let current_level: Level | null = null;
 let current_entities: Map<EntityID, Entity> = new Map();
+let target: Entity | null = null;
 
 function activate_level(level_id: LevelID) {
   if (current_level != null) {
@@ -110,6 +114,11 @@ function activate_level(level_id: LevelID) {
   });
   new_level.element.style.display = "block";
   current_level = new_level;
+
+  const level_number_element = document.querySelector("#levelnumber") as HTMLInputElement;
+  if (level_number_element.value !== new_level.id) {
+    level_number_element.value = new_level.id;
+  }
 }
 
 // Load levels and entities
@@ -122,6 +131,10 @@ function activate_level(level_id: LevelID) {
       let ent = new Entity(String(next_entity_id++), element as HTMLElement);
       ent.reset();
       persistent_entities.set(ent.id, ent);
+
+      if (ent.target) {
+        target = ent;
+      }
     });
   });
 
@@ -167,10 +180,31 @@ function activate_level(level_id: LevelID) {
     }
   });
 
-  document.addEventListener("mouseup", (_event: MouseEvent) => {
+  document.addEventListener("mouseup", (event: MouseEvent) => {
+    let removedAnEntity = false;
+    if (active != null) {
+      if (active.rect().intersects(target!.rect())) {
+        active.element.style.display = "none";
+        current_entities.delete(active.id);
+        removedAnEntity = true;
+        // TODO: increase trash counter
+      }
+    }
+
     active = null;
     offsetX = null;
     offsetY = null;
+
+    if (removedAnEntity) {
+      for (let m of current_entities.values()) {
+        if (m.moveable) {
+          return;
+        }
+      }
+      // TODO: check corner case for last level
+      activate_level(String(parseInt(current_level!.id) + 1));
+      // TODO: level transition animation?
+    }
   });
 
   document.addEventListener("mousemove", (event: MouseEvent) => {

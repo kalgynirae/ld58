@@ -46,6 +46,10 @@ body {
 		background-color: lightblue;
 		cursor: pointer;
 	}
+
+	&.nonsolid {
+		background-color: green;
+	}
 }
 
 .debug {

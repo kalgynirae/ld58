@@ -31,7 +31,7 @@ body {
 
 .entity {
 	position: absolute;
-	background-color: lightcoral;
+	background-color: red;
 	cursor: default;
 	user-select: none;
 
@@ -47,7 +47,7 @@ body {
 		cursor: pointer;
 	}
 
-	&.nonsolid {
+	&.target {
 		background-color: green;
 	}
 }

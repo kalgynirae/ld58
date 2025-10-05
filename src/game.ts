@@ -222,5 +222,10 @@ function activate_level(level_id: LevelID) {
         }
       }
     }
+
+    const posXElement = document.querySelector("#posX") as HTMLElement;
+    const posYElement = document.querySelector("#posY") as HTMLElement;
+    posXElement.textContent = String(event.pageX);
+    posYElement.textContent = String(event.pageY);
   });
 }

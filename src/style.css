@@ -32,14 +32,29 @@ body {
 }
 .game-window {
 	position: relative;
-	background-color: gray;
 	width: 800px;
 	height: 600px;
 	margin-inline: auto;
 }
 
 .title-screen {
-  background-image: url('CityBackground.png');
+	background-image: url('CityBackground.png');
+}
+
+.house-level {
+	background-image: url('HouseBackground.png');
+}
+
+.river-level {
+	background-image: url('RiverBackground.png');
+	background-size: 100%;
+	image-rendering: pixelated;
+}
+
+/* Preload backgrounds for later levels */
+body::after{
+   position:absolute; width:0; height:0; overflow:hidden; z-index:-1;
+   content:url('HouseBackground.png') url('RiverBackground.png');
 }
 
 .entity {

@@ -100,37 +100,45 @@ const gameWindowX = gameWindow.getBoundingClientRect().x;
 const gameWindowY = gameWindow.getBoundingClientRect().y;
 let persistent_entities: Map<EntityID, Entity> = new Map();
 let levels: Map<LevelID, Level> = new Map();
-let current_level: Level | null = null;
+let currentLevel: Level | null = null;
 let current_entities: Map<EntityID, Entity> = new Map();
 let target: Entity | null = null;
 let collectedCount: number = 0;
 // account for bonus moveable object
 let totalCount: number = 1;
+const levelBackgrounds: Record<string, string> = {
+    "1": "title-screen",
+    "2": "house-level", 
+    "3": "river-level"
+  };
 
 function activate_level(level_id: LevelID) {
-  if (current_level != null) {
-    current_level.element.style.display = "none";
+  let prevLevel = null;
+  if (currentLevel != null) {
+    currentLevel.element.style.display = "none";
+    prevLevel = currentLevel.id;
   }
-  current_level = null;
+  currentLevel = null;
   current_entities = new Map(persistent_entities);
 
-  const new_level = levels.get(level_id)!;
-  new_level.entities.forEach((ent) => {
+  const newLevel = levels.get(level_id)!;
+  newLevel.entities.forEach((ent) => {
     ent.reset();
     current_entities.set(ent.id, ent);
   });
-  new_level.element.style.display = "block";
-  current_level = new_level;
+  newLevel.element.style.display = "block";
+  currentLevel = newLevel;
 
   const level_number_element = document.querySelector("#levelnumber") as HTMLInputElement;
-  if (level_number_element.value !== new_level.id) {
-    level_number_element.value = new_level.id;
+  if (level_number_element.value !== newLevel.id) {
+    level_number_element.value = newLevel.id;
   }
 
-  if (new_level.id == "1") {
-    gameWindow.classList.add("title-screen");
-  } else {
-    gameWindow.classList.remove("title-screen");
+  if (levelBackgrounds[newLevel.id]) {
+    gameWindow.classList.add(levelBackgrounds[newLevel.id]);
+  }
+  if (prevLevel && levelBackgrounds[prevLevel]) {
+    gameWindow.classList.remove(levelBackgrounds[prevLevel]);
   }
 }
 
@@ -256,7 +264,7 @@ function activate_level(level_id: LevelID) {
           return;
         }
       }
-      activate_level(String(parseInt(current_level!.id) + 1));
+      activate_level(String(parseInt(currentLevel!.id) + 1));
       // TODO: level transition animation?
     }
   });

@@ -3,23 +3,76 @@ enum GameState {
   TitleScreen,
   Level1,
   Level2,
-  NeutralEnding,
+  Level2Fire,
   Level2Exploded,
+  NeutralEnding,
   TrueEnding,
 };
-let gameState = GameState.ClickToStart;
+// @ts-ignore
+let gameState: GameState = null;
+const gameStateDebugElement = document.querySelector("#gamestate") as HTMLElement;
+const validTransitions: Map<GameState | null, GameState[]> = new Map();
+validTransitions.set(null, [GameState.ClickToStart]);
+validTransitions.set(GameState.ClickToStart, [GameState.TitleScreen]);
+validTransitions.set(GameState.TitleScreen, [GameState.Level1]);
+validTransitions.set(GameState.Level1, [GameState.Level2]);
+validTransitions.set(GameState.Level2, [GameState.NeutralEnding, GameState.Level2Fire]);
+validTransitions.set(GameState.Level2Fire, [GameState.NeutralEnding, GameState.Level2Exploded]);
+validTransitions.set(GameState.Level2Exploded, [GameState.TrueEnding]);
+validTransitions.set(GameState.NeutralEnding, [GameState.TitleScreen]);
+validTransitions.set(GameState.TrueEnding, [GameState.TitleScreen]);
+
+function setGameState(newState: GameState) {
+  if ((validTransitions.get(gameState) ?? []).indexOf(newState) >= 0) {
+      gameState = newState;
+      gameStateDebugElement.textContent = GameState[gameState] ?? "OHONO";
+  } else {
+    throw new Error(`gameState cannot change to ${GameState[newState]} from ${GameState[gameState]}`);
+  }
+}
+setGameState(GameState.ClickToStart);
 
 function draggingAllowed(): boolean {
   switch (gameState) {
     case GameState.TitleScreen:
     case GameState.Level1:
     case GameState.Level2:
+    case GameState.Level2Fire:
     case GameState.Level2Exploded:
       return true;
-    case GameState.ClickToStart:
+    default:
+      return false;
+  }
+}
+
+function advanceLevel() {
+  switch (gameState) {
+    case GameState.TitleScreen:
+      setGameState(GameState.Level1);
+      activateLevel("level1");
+      break;
+    case GameState.Level1:
+      setGameState(GameState.Level2);
+      activateLevel("level2");
+      break;
+    case GameState.Level2:
+    case GameState.Level2Fire:
+    case GameState.Level2Exploded:
+      if (collectedCount == totalCount) {
+        setGameState(GameState.TrueEnding);
+        activateLevel("levelTrueEnding");
+      } else {
+        setGameState(GameState.NeutralEnding);
+        activateLevel("levelNeutralEnding");
+      }
+      break;
     case GameState.NeutralEnding:
     case GameState.TrueEnding:
-      return false;
+      setGameState(GameState.TitleScreen);
+      activateLevel("levelTitle");
+    default:
+      console.log(`advanceLevel() called while gameState is ${GameState[gameState]}`);
+      break;
   }
 }
 
@@ -139,12 +192,12 @@ let collectedCount: number = 0;
 // account for bonus moveable object
 let totalCount: number = 1;
 const levelBackgrounds: Record<string, string> = {
-    "1": "title-screen",
-    "2": "house-level", 
-    "3": "river-level"
-  };
+  "levelTitle": "title-screen",
+  "level1": "house-level", 
+  "level2": "river-level"
+};
 
-function activate_level(level_id: LevelID) {
+function activateLevel(level_id: LevelID) {
   let prevLevel = null;
   if (currentLevel != null) {
     currentLevel.element.style.display = "none";
@@ -161,15 +214,8 @@ function activate_level(level_id: LevelID) {
   newLevel.element.style.display = "block";
   currentLevel = newLevel;
 
-  const level_number_element = document.querySelector("#levelnumber") as HTMLInputElement;
-  if (level_number_element.value !== newLevel.id) {
-    level_number_element.value = newLevel.id;
-  }
-
-  if (levelBackgrounds[newLevel.id]) {
-    gameWindow.classList.add(levelBackgrounds[newLevel.id]);
-  }
-  if (prevLevel && levelBackgrounds[prevLevel]) {
+  gameWindow.classList.add(levelBackgrounds[newLevel.id]);
+  if (prevLevel != null) {
     gameWindow.classList.remove(levelBackgrounds[prevLevel]);
   }
 }
@@ -207,7 +253,7 @@ function activate_level(level_id: LevelID) {
 
   // Levels (and level entities)
   document.querySelectorAll("section").forEach((section) => {
-    const level_id = section.id.substring("level".length);
+    const level_id = section.id;
     let level = new Level(level_id, section);
     levels.set(level_id, level);
 
@@ -224,12 +270,12 @@ function activate_level(level_id: LevelID) {
   const totalCountElement = document.querySelector("#totalCount") as HTMLElement;
   totalCountElement.textContent = String(totalCount);
 
-  const level_number_element = document.querySelector("#levelnumber") as HTMLInputElement;
-  level_number_element.addEventListener("change", (event: Event) => {
-    activate_level((event.target as HTMLInputElement).value);
+  const nextLevelElement = document.querySelector("#nextlevel") as HTMLButtonElement;
+  nextLevelElement.addEventListener("click", (_event: Event) => {
+    advanceLevel();
   });
 
-  activate_level(level_number_element.value);
+  activateLevel("levelTitle");
 
   const showWallsElement = document.querySelector("#showWalls") as HTMLInputElement;
   showWallsElement.addEventListener("change", (_event: Event) => {
@@ -299,8 +345,7 @@ function activate_level(level_id: LevelID) {
           return;
         }
       }
-      activate_level(String(parseInt(currentLevel!.id) + 1));
-      // TODO: level transition animation?
+      advanceLevel();
     }
   });
 
@@ -334,5 +379,5 @@ clickToStart.addEventListener("click", async (e) => {
   initAudio();
   startMusic();
   clickToStart.style.display = "none";
-  gameState = GameState.TitleScreen;
+  setGameState(GameState.TitleScreen);
 });

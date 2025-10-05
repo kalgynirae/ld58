@@ -24,17 +24,17 @@
 					<div class=wall data-x=764 data-y=475 style="width:1px;height:96px;"></div>
 					<div class=wall data-x=540 data-y=570 style="width:225px;height:1px;"></div>
 				</div>
-				<section id=level0>
+				<section id=levelDebug>
 					<div class=moveable data-x=400 data-y=200>I AM A DEBUG SCREEN</div>
 					<img class=moveable src=a.svg data-x=100 data-y=100>
 					<img class=moveable src=a.svg data-x=200 data-y=200>
 					<img src=a.svg data-x=300 data-y=300>
 				</section>
-				<section id=level1>
+				<section id=levelTitle>
 					<img class=nonsolid src=titlesign-x58y105.png data-x=58 data-y=105>
 					<img class=moveable src=startsign-x193y376.png data-x=193 data-y=376>
 				</section>
-				<section id=level2>
+				<section id=level1>
 					<img class="moveable nonsolid" src=Bag.png data-x=408 data-y=535 style="width:36px;height:21px;">
 					<img class="moveable nonsolid" src=Hanger.png data-x=265 data-y=518 style="width:66px;height:39px;">
 					<img class="moveable nonsolid" src=Letter.png data-x=520 data-y=140 style="width:33px;height:15px;">
@@ -42,7 +42,7 @@
 					<img class="moveable nonsolid" src=Pot.png data-x=10 data-y=486 style="width:48px;height:27px;">
 					<img class="moveable nonsolid" src=soda.png data-x=450 data-y=490 style="width:21px;height:39px;">
 				</section>
-				<section id=level3>
+				<section id=level2>
 					<img class="moveable nonsolid" src=Bag.png data-x=448 data-y=70 style="width:36px;height:21px;">
 					<img class="moveable nonsolid" src=Bomb.png data-x=700 data-y=170 style="width:54px;height:63px;">
 					<img class="moveable nonsolid" src=Can.png data-x=150 data-y=510 style="width:27px;height:12px;">
@@ -55,13 +55,18 @@
 					<img class="moveable nonsolid" src=Paperball.png data-x=428 data-y=224 style="width:24px;height:18px;">
 					<img class="moveable nonsolid" src=soda.png data-x=6 data-y=240 style="width:21px;height:39px;">
 				</section>
+				<section id=levelNeutralEnding>
+				</section>
+				<section id=levelTrueEnding>
+				</section>
 			</div>
 			<div class=debug>
 				<fieldset>
 					<legend>Debug controls</legend>
-					<div>Level: <input id=levelnumber type=number style="width: 3em" value=1 min=0></div>
-					<label><div>Show walls <input type="checkbox" id="showWalls" checked></div></label>
-					<label><div>Show target <input type="checkbox" id="showTarget"></div></label>
+					<div>GameState: <span id=gamestate>&nbsp;</span></div>
+					<div>Level: <button id=nextlevel>Advance</button></div>
+					<div><label>Show walls <input type="checkbox" id="showWalls" checked></label></div>
+					<div><label>Show target <input type="checkbox" id="showTarget"></label></div>
 					<div>X: <span id=posX>0</span></div>
 					<div>Y: <span id=posY>0</span></div>
 					<div>Collected: <span id=collectedCount>0</span>

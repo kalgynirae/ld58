@@ -319,7 +319,9 @@ function activate_level(level_id: LevelID) {
 }
 
 // State transitions
-document.querySelector(".click-to-start").addEventListener("click", (e) => {
-  e.target.style.display = "none";
+const clickToStart = document.querySelector(".click-to-start") as HTMLElement;
+clickToStart.addEventListener("click", async (e) => {
+  clickToStart.style.display = "none";
+  await startMusic();
   gameState = GameState.TitleScreen;
 });

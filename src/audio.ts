@@ -13,7 +13,8 @@ async function loadMusicAndSounds() {
   yoink = await load("audio/yoink.mp3");
 }
 
-function startMusic() {
+async function startMusic() {
+  await context.resume();
   const gainNode = context.createGain();
   gainNode.gain.value = 0.5;
   gainNode.connect(context.destination);

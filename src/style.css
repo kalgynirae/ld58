@@ -27,6 +27,7 @@ body {
 	background-color: gray;
 	width: 800px;
 	height: 600px;
+	margin-inline: auto;
 }
 
 .entity {

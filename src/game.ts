@@ -19,6 +19,8 @@ class Entity {
   originY: number;
   posX: number = 0;
   posY: number = 0;
+  offsetX: number = 0;
+  offsetY: number = 0;
   moveable: boolean;
   target: boolean;
   solid: boolean;
@@ -57,7 +59,10 @@ class Entity {
     for (let m of current_entities.values()) {
       if (m === this) continue;
       if (!m.solid) continue;
-      if (newRect.intersects(m.rect())) return false;
+      if (newRect.intersects(m.rect())) {
+        // debugger;
+        return false;
+      }
     }
     this.moveTo(newX, newY);
     return true;
@@ -67,12 +72,12 @@ class Entity {
     this.posX = x;
     this.posY = y;
     this.update();
-    console.log(`moved ${this.id} to ${this.rect()}`);
+    // console.log(`moved ${this.id} to ${this.rect()}`);
   }
 
   update() {
-    this.element.style.left = `${this.posX}px`;
-    this.element.style.top = `${this.posY}px`;
+    this.element.style.left = `${this.posX + this.offsetX}px`;
+    this.element.style.top = `${this.posY + this.offsetY}px`;
   }
 }
 
@@ -141,6 +146,20 @@ function activate_level(level_id: LevelID) {
     });
   });
 
+  // Title "Trash"
+  const tt_element = document.querySelector(".title-trash") as HTMLElement;
+  const tt_ent = new Entity(String(next_entity_id++), tt_element);
+  const game_window_rect = (document.querySelector(".game-window") as HTMLElement).getBoundingClientRect();
+  const tt_rect = tt_ent.element.getBoundingClientRect();
+  console.log(game_window_rect);
+  console.log(tt_rect);
+  tt_ent.offsetX = game_window_rect.left - tt_rect.left;
+  tt_ent.offsetY = game_window_rect.top - tt_rect.top;
+  tt_ent.originX = -tt_ent.offsetX;
+  tt_ent.originY = -tt_ent.offsetY;
+  tt_ent.reset();
+  persistent_entities.set(tt_ent.id, tt_ent);
+
   // Levels (and level entities)
   document.querySelectorAll("section").forEach((section) => {
     const level_id = section.id.substring("level".length);
@@ -201,7 +220,11 @@ function activate_level(level_id: LevelID) {
     let removedAnEntity = false;
     if (active != null) {
       if (active.rect().intersects(target!.rect())) {
-        active.element.style.display = "none";
+        if (active.element.classList.contains("title-trash")) {
+          active.element.style.visibility = "hidden";
+        } else {
+          active.element.style.display = "none";
+        }
         current_entities.delete(active.id);
         removedAnEntity = true;
         collectedCount += 1;

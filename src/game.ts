@@ -331,9 +331,8 @@ function activateLevel(level_id: LevelID) {
     if (active != null) {
       if (active.rect().middlePointIntersects(target!.rect())) {
         active.element.classList.add("glide");
-        active.element.style.top = "460px";
-        const newLeft = 655 - (active.element.getBoundingClientRect().width / 2);
-        active.element.style.left = `${newLeft}px`;
+        const newX = 655 - (active.element.getBoundingClientRect().width / 2);
+        active.moveTo(newX, 460);
         let a = active;
         setTimeout(() => {
           if (a.element.id === "title-trash") {
@@ -376,7 +375,10 @@ function activateLevel(level_id: LevelID) {
 
     if (removedAnEntity) {
       for (let m of current_entities.values()) {
-        if (m.moveable && m.element.id !== "title-trash" && gameState !== GameState.Level2Exploded) {
+        if (m.moveable && m.element.id !== "title-trash") {
+          return;
+        }
+        if (m.element.id === "title-trash" && gameState === GameState.Level2Exploded) {
           return;
         }
       }

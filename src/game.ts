@@ -204,6 +204,7 @@ const levelBackgrounds: Record<string, string> = {
   "levelTitle": "title-screen",
   "level1": "house-level",
   "level2": "river-level",
+  "levelTrueEnding": "true-ending",
 };
 
 function activateLevel(level_id: LevelID) {
@@ -226,6 +227,10 @@ function activateLevel(level_id: LevelID) {
   gameWindow.classList.add(levelBackgrounds[newLevel.id]);
   if (prevLevel != null) {
     gameWindow.classList.remove(levelBackgrounds[prevLevel]);
+  }
+  const spillageElement = document.querySelector("#spillage") as HTMLElement;
+  if (spillageElement.style.visibility === "visible") {
+    spillageElement.style.visibility = "hidden";
   }
 }
 
@@ -456,8 +461,8 @@ function deactivateExplosion() {
 }
 
 function activateSurpriseWall() {
-  const fireElement = document.querySelector("#spillage") as HTMLElement;
-  fireElement.style.visibility = "visible";
+  const spillageElement = document.querySelector("#spillage") as HTMLElement;
+  spillageElement.style.visibility = "visible";
 
   const surpriseWallElement = document.querySelector("#surprise-wall") as HTMLElement;
   surpriseWallElement.style.height = "300px";

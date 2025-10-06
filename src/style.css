@@ -75,10 +75,14 @@ body {
 	image-rendering: pixelated;
 }
 
+.true-ending {
+	background-image: url('SpaceBackground.png');
+}
+
 /* Preload backgrounds for levels */
 body::after{
    position:absolute; width:0; height:0; overflow:hidden; z-index:-1;
-   content:url('CityBackground.png') url('HouseBackground.png') url('RiverBackground.png');
+   content:url('CityBackground.png') url('HouseBackground.png') url('RiverBackground.png') url('SpaceBackground.png');
 }
 
 .entity {

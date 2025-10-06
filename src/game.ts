@@ -68,6 +68,8 @@ function advanceLevel() {
       break;
     case GameState.NeutralEnding:
     case GameState.TrueEnding:
+      updateCollectedCount(0);
+      title_trash_entity?.reset();
       setGameState(GameState.TitleScreen);
       activateLevel("levelTitle");
     default:
@@ -128,6 +130,11 @@ class Entity {
     this.posX = this.originX;
     this.posY = this.originY;
     this.update();
+
+    if (this.moveable) {
+      this.element.style.visibility = "visible";
+      this.element.style.display = "";
+    }
   }
 
   moveBy(dx: number, dy: number) {
@@ -188,13 +195,14 @@ let levels: Map<LevelID, Level> = new Map();
 let currentLevel: Level | null = null;
 let current_entities: Map<EntityID, Entity> = new Map();
 let target: Entity | null = null;
+let title_trash_entity: Entity | null = null;
 let collectedCount: number = 0;
 // account for bonus moveable object
 let totalCount: number = 1;
 const levelBackgrounds: Record<string, string> = {
   "levelTitle": "title-screen",
-  "level1": "house-level", 
-  "level2": "river-level"
+  "level1": "house-level",
+  "level2": "river-level",
 };
 
 function activateLevel(level_id: LevelID) {
@@ -239,17 +247,17 @@ function activateLevel(level_id: LevelID) {
 
   // Title "Trash"
   const tt_element = document.querySelector(".title-trash") as HTMLElement;
-  const tt_ent = new Entity(String(next_entity_id++), tt_element);
+  title_trash_entity = new Entity(String(next_entity_id++), tt_element);
   const game_window_rect = (document.querySelector(".game-window") as HTMLElement).getBoundingClientRect();
-  const tt_rect = tt_ent.element.getBoundingClientRect();
+  const tt_rect = title_trash_entity.element.getBoundingClientRect();
   console.log(game_window_rect);
   console.log(tt_rect);
-  tt_ent.offsetX = game_window_rect.left - tt_rect.left;
-  tt_ent.offsetY = game_window_rect.top - tt_rect.top;
-  tt_ent.originX = -tt_ent.offsetX;
-  tt_ent.originY = -tt_ent.offsetY;
-  tt_ent.reset();
-  persistent_entities.set(tt_ent.id, tt_ent);
+  title_trash_entity.offsetX = game_window_rect.left - tt_rect.left;
+  title_trash_entity.offsetY = game_window_rect.top - tt_rect.top;
+  title_trash_entity.originX = -title_trash_entity.offsetX;
+  title_trash_entity.originY = -title_trash_entity.offsetY;
+  title_trash_entity.reset();
+  persistent_entities.set(title_trash_entity.id, title_trash_entity);
 
   // Levels (and level entities)
   document.querySelectorAll("section").forEach((section) => {
@@ -334,9 +342,7 @@ function activateLevel(level_id: LevelID) {
         }
         current_entities.delete(active.id);
         removedAnEntity = true;
-        collectedCount += 1;
-        const collectedCountElement = document.querySelector("#collectedCount") as HTMLElement;
-        collectedCountElement.textContent = String(collectedCount);
+        updateCollectedCount(collectedCount + 1);
 
         if (active.element.id === "cigarette") {
           activateFire();
@@ -442,4 +448,10 @@ function activateSurpriseWall() {
 
   const surpriseWallElement = document.querySelector("#surprise-wall") as HTMLElement;
   surpriseWallElement.style.height = "300px";
+}
+
+function updateCollectedCount(newCount: number) {
+  collectedCount = newCount;
+  const collectedCountElement = document.querySelector("#collectedCount") as HTMLElement;
+  collectedCountElement.textContent = String(collectedCount);
 }

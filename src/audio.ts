@@ -49,7 +49,7 @@ function playMusic(buf: AudioBuffer) {
   } else {
     const now = audioContext!.currentTime;
     musicGainNode.gain.linearRampToValueAtTime(0.1, now + 1);
-    musicGainNode.gain.setValueAtTime(0.6, now + 1);
+    musicGainNode.gain.setValueAtTime((buf == music) ? 0.6 : 0.75, now + 1);
     musicNode!.stop(now + 1);
     startTime = now + 1;
   }

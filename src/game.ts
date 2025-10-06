@@ -57,14 +57,12 @@ function advanceLevel() {
       break;
     case GameState.Level2:
     case GameState.Level2Fire:
+      setGameState(GameState.NeutralEnding);
+      activateLevel("levelNeutralEnding");
+      break;
     case GameState.Level2Exploded:
-      if (collectedCount == totalCount) {
-        setGameState(GameState.TrueEnding);
-        activateLevel("levelTrueEnding");
-      } else {
-        setGameState(GameState.NeutralEnding);
-        activateLevel("levelNeutralEnding");
-      }
+      setGameState(GameState.TrueEnding);
+      activateLevel("levelTrueEnding");
       break;
     case GameState.NeutralEnding:
       setGameState(GameState.Level2);

@@ -6,6 +6,7 @@ let spacemusic: AudioBuffer | null = null;
 let musicGainNode: GainNode | null = null;
 let musicNode: AudioBufferSourceNode | null = null;
 
+let blastoff: AudioBuffer | null = null;
 let collect: AudioBuffer | null = null;
 let drop: AudioBuffer | null = null;
 let explosion: AudioBuffer | null = null;
@@ -23,6 +24,7 @@ async function load(path: string): Promise<AudioBuffer> {
 async function loadMusicAndSounds() {
   music = await load("music.mp3");
   spacemusic = await load("spacemusic.mp3");
+  blastoff = await load("blastoff.wav");
   collect = await load("collect.wav");
   drop = await load("drop.wav");
   explosion = await load("explosion.wav");

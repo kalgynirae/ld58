@@ -63,6 +63,7 @@ function advanceLevel() {
     case GameState.Level2Exploded:
       setGameState(GameState.TrueEnding);
       playMusic(spacemusic!);
+      initiateFlightSequence();
       activateLevel("levelTrueEnding");
       break;
     case GameState.NeutralEnding:
@@ -75,6 +76,7 @@ function advanceLevel() {
       setGameState(GameState.TitleScreen);
       playMusic(music!);
       activateLevel("levelTitle");
+      resetTrashBin();
       break;
     default:
       console.log(`advanceLevel() called while gameState is ${GameState[gameState]}`);
@@ -500,4 +502,32 @@ function updateCollectedCount(newCount: number) {
   collectedCountElement.textContent = String(collectedCount);
   const collectedCountDisplayElement = document.querySelector("#collectedCountDisplay") as HTMLElement;
   collectedCountDisplayElement.textContent = `You collected ${collectedCount} of ${totalCount} trash!`;
+}
+
+function initiateFlightSequence() {
+  const thrusters = document.querySelector("#thrusters") as HTMLElement;
+  thrusters.style.visibility = "visible";
+  const trashback = document.querySelector("#trashback") as HTMLElement;
+  const trashfront = document.querySelector("#trashfront") as HTMLElement;
+  trashback.style.animation = "vibrate 1.5s infinite";
+  trashfront.style.animation = "vibrate 1.5s infinite";
+  setTimeout(() => {
+    thrusters.style.visibility = "hidden";
+    trashback.style.visibility = "hidden";
+    trashfront.style.visibility = "hidden";
+    trashback.style.animation = "";
+    trashfront.style.animation = "";
+  }, 8000);
+  const persistent = document.querySelector(".persistent") as HTMLElement;
+  persistent.style.animation = "takeoff 8s ease-in";
+  setTimeout(() => playSound(blastoff!), 250);
+}
+
+function resetTrashBin() {
+  const persistent = document.querySelector(".persistent") as HTMLElement;
+  const trashback = document.querySelector("#trashback") as HTMLElement;
+  const trashfront = document.querySelector("#trashfront") as HTMLElement;
+  persistent.style.animation = "";
+  trashback.style.visibility = "visible";
+  trashfront.style.visibility = "visible";
 }

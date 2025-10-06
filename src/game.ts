@@ -337,6 +337,12 @@ function activateLevel(level_id: LevelID) {
           setGameState(GameState.Level2Fire);
           setTimeout(deactivateFire, 2500);
         }
+
+        if (active.element.id === "bomb" && gameState === GameState.Level2Fire) {
+          activateExplosion();
+          setGameState(GameState.Level2Exploded);
+          setTimeout(deactivateExplosion, 2500);
+        }
       }
       playSound(removedAnEntity ? collect! : drop!);
     }
@@ -404,4 +410,14 @@ function deactivateFire() {
   if (gameState === GameState.Level2Fire) {
     setGameState(GameState.Level2);
   }
+}
+
+function activateExplosion() {
+  const fireElement = document.querySelector("#explosion") as HTMLElement;
+  fireElement.style.visibility = "visible";
+}
+
+function deactivateExplosion() {
+  const fireElement = document.querySelector("#explosion") as HTMLElement;
+  fireElement.style.visibility = "hidden";
 }

@@ -26,11 +26,13 @@ function initAudio() {
 
 function startMusic() {
   const gainNode = audioContext!.createGain();
-  gainNode.gain.value = 0.2;
+  gainNode.gain.value = 0.6;
   gainNode.connect(audioContext!.destination);
   const musicNode = new AudioBufferSourceNode(audioContext!, {
     buffer: music,
     loop: true,
+    loopStart: 3.872,
+    loopEnd: music!.duration,
   });
   musicNode.connect(gainNode);
   musicNode.start();

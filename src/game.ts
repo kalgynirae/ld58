@@ -17,7 +17,7 @@ validTransitions.set(GameState.ClickToStart, [GameState.TitleScreen]);
 validTransitions.set(GameState.TitleScreen, [GameState.Level1]);
 validTransitions.set(GameState.Level1, [GameState.Level2]);
 validTransitions.set(GameState.Level2, [GameState.NeutralEnding, GameState.Level2Fire]);
-validTransitions.set(GameState.Level2Fire, [GameState.NeutralEnding, GameState.Level2Exploded]);
+validTransitions.set(GameState.Level2Fire, [GameState.NeutralEnding, GameState.Level2Exploded, GameState.Level2]);
 validTransitions.set(GameState.Level2Exploded, [GameState.TrueEnding]);
 validTransitions.set(GameState.NeutralEnding, [GameState.TitleScreen]);
 validTransitions.set(GameState.TrueEnding, [GameState.TitleScreen]);
@@ -331,6 +331,12 @@ function activateLevel(level_id: LevelID) {
         collectedCount += 1;
         const collectedCountElement = document.querySelector("#collectedCount") as HTMLElement;
         collectedCountElement.textContent = String(collectedCount);
+
+        if (active.element.id === "cigarette") {
+          activateFire();
+          setGameState(GameState.Level2Fire);
+          setTimeout(deactivateFire, 2500);
+        }
       }
       playSound(removedAnEntity ? collect! : drop!);
     }
@@ -385,4 +391,17 @@ clickToStart.addEventListener("click", async (e) => {
 function activateSurpriseWall() {
   const surpriseWallElement = document.querySelector("#surprise-wall") as HTMLElement;
   surpriseWallElement.style.height = "250px";
+}
+
+function activateFire() {
+  const fireElement = document.querySelector("#fire") as HTMLElement;
+  fireElement.style.visibility = "visible";
+}
+
+function deactivateFire() {
+  const fireElement = document.querySelector("#fire") as HTMLElement;
+  fireElement.style.visibility = "hidden";
+  if (gameState === GameState.Level2Fire) {
+    setGameState(GameState.Level2);
+  }
 }

@@ -381,3 +381,8 @@ clickToStart.addEventListener("click", async (e) => {
   clickToStart.style.display = "none";
   setGameState(GameState.TitleScreen);
 });
+
+function activateSurpriseWall() {
+  const surpriseWallElement = document.querySelector("#surprise-wall") as HTMLElement;
+  surpriseWallElement.style.height = "250px";
+}

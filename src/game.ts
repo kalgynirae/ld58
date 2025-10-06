@@ -16,7 +16,7 @@ validTransitions.set(null, [GameState.ClickToStart]);
 validTransitions.set(GameState.ClickToStart, [GameState.TitleScreen]);
 validTransitions.set(GameState.TitleScreen, [GameState.Level1]);
 validTransitions.set(GameState.Level1, [GameState.Level2]);
-validTransitions.set(GameState.Level2, [GameState.NeutralEnding, GameState.Level2Fire]);
+validTransitions.set(GameState.Level2, [GameState.NeutralEnding, GameState.Level2Fire, GameState.Level2Exploded]);
 validTransitions.set(GameState.Level2Fire, [GameState.NeutralEnding, GameState.Level2Exploded, GameState.Level2]);
 validTransitions.set(GameState.Level2Exploded, [GameState.TrueEnding]);
 validTransitions.set(GameState.NeutralEnding, [GameState.Level2]);
@@ -195,6 +195,7 @@ const gameWindow = document.querySelector(".game-window") as HTMLElement;
 const gameWindowX = gameWindow.getBoundingClientRect().x;
 const gameWindowY = gameWindow.getBoundingClientRect().y;
 const fireElement = document.querySelector(".fire") as HTMLElement;
+const smokeElement = document.querySelector(".smoke") as HTMLElement;
 let persistent_entities: Map<EntityID, Entity> = new Map();
 let levels: Map<LevelID, Level> = new Map();
 let currentLevel: Level | null = null;
@@ -356,15 +357,22 @@ function activateLevel(level_id: LevelID) {
         updateCollectedCount(collectedCount + 1);
 
         if (active.element.id === "cigarette") {
-          activateFire();
-          setGameState(GameState.Level2Fire);
-          setTimeout(deactivateFire, 2500);
+          activateSmoke();
+          playSound(smoke!);
+          setTimeout(() => {
+            activateFire();
+            setGameState(GameState.Level2Fire);
+            setTimeout(deactivateFire, 2500);
+          }, 1200);
         }
 
         if (active.element.id === "bomb" && gameState === GameState.Level2Fire) {
-          activateExplosion();
-          setGameState(GameState.Level2Exploded);
-          setTimeout(deactivateExplosion, 1500);
+          playSound(fuse!);
+          setTimeout(() => {
+            activateExplosion();
+            setGameState(GameState.Level2Exploded);
+            setTimeout(deactivateExplosion, 1500);
+          }, 1000);
         }
       }
       if (active.element.id === "start-button" && Math.abs(active.posX - active.originX) < 10 && Math.abs(active.posY - active.originY) < 10) {
@@ -440,9 +448,17 @@ clickToStart.addEventListener("click", async (e) => {
   setGameState(GameState.TitleScreen);
 });
 
+function activateSmoke() {
+  const smoke = document.querySelector("#smoke") as HTMLElement;
+  smoke.style.visibility = "visible";
+}
+
 function activateFire() {
+  const smoke = document.querySelector("#smoke") as HTMLElement;
+  smoke.style.visibility = "hidden";
   const fireElement = document.querySelector("#fire") as HTMLElement;
   fireElement.style.visibility = "visible";
+  playSound(flames!);
 }
 
 function deactivateFire() {
@@ -456,6 +472,7 @@ function deactivateFire() {
 function activateExplosion() {
   const fireElement = document.querySelector("#explosion") as HTMLElement;
   fireElement.style.visibility = "visible";
+  playSound(explosion!);
 
   setTimeout(() => {
     const titleTrashElement = document.querySelector("#title-trash") as HTMLElement;

@@ -8,7 +8,10 @@ let musicNode: AudioBufferSourceNode | null = null;
 
 let collect: AudioBuffer | null = null;
 let drop: AudioBuffer | null = null;
-let fire: AudioBuffer | null = null;
+let explosion: AudioBuffer | null = null;
+let flames: AudioBuffer | null = null;
+let fuse: AudioBuffer | null = null;
+let smoke: AudioBuffer | null = null;
 let yoink: AudioBuffer | null = null;
 
 async function load(path: string): Promise<AudioBuffer> {
@@ -22,7 +25,10 @@ async function loadMusicAndSounds() {
   spacemusic = await load("spacemusic.mp3");
   collect = await load("collect.wav");
   drop = await load("drop.wav");
-  fire = await load("fire.wav");
+  explosion = await load("explosion.wav");
+  flames = await load("flames.wav");
+  fuse = await load("fuse.wav");
+  smoke = await load("smoke.wav");
   yoink = await load("yoink.wav");
 }
 

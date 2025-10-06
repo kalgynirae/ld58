@@ -19,7 +19,7 @@ validTransitions.set(GameState.Level1, [GameState.Level2]);
 validTransitions.set(GameState.Level2, [GameState.NeutralEnding, GameState.Level2Fire]);
 validTransitions.set(GameState.Level2Fire, [GameState.NeutralEnding, GameState.Level2Exploded, GameState.Level2]);
 validTransitions.set(GameState.Level2Exploded, [GameState.TrueEnding]);
-validTransitions.set(GameState.NeutralEnding, [GameState.TitleScreen]);
+validTransitions.set(GameState.NeutralEnding, [GameState.Level2]);
 validTransitions.set(GameState.TrueEnding, [GameState.TitleScreen]);
 
 function setGameState(newState: GameState) {
@@ -67,6 +67,8 @@ function advanceLevel() {
       }
       break;
     case GameState.NeutralEnding:
+      setGameState(GameState.Level2);
+      activateLevel("level2");
     case GameState.TrueEnding:
       updateCollectedCount(0);
       title_trash_entity?.reset();

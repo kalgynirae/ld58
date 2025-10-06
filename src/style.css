@@ -113,6 +113,7 @@ body::after{
 
 .debug {
 	margin-top: 1rem;
+	visibility: hidden;
 }
 
 /*

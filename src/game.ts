@@ -399,7 +399,7 @@ function activateLevel(level_id: LevelID) {
     if (event.ctrlKey && event.key === 'd') {
       event.preventDefault();
       const debugElement = document.querySelector("#debug") as HTMLElement;
-      if (debugElement.style.visibility === "hidden") {
+      if (getComputedStyle(debugElement).visibility === "hidden") {
         debugElement.style.visibility = "visible";
       } else {
         debugElement.style.visibility = "hidden";

@@ -452,6 +452,11 @@ function deactivateFire() {
 function activateExplosion() {
   const fireElement = document.querySelector("#explosion") as HTMLElement;
   fireElement.style.visibility = "visible";
+
+  setTimeout(() => {
+    const titleTrashElement = document.querySelector("#title-trash") as HTMLElement;
+    titleTrashElement.style.transform = 'rotate(6deg)';
+  }, 1000);
 }
 
 function deactivateExplosion() {

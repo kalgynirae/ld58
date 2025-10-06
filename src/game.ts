@@ -356,6 +356,9 @@ function activateLevel(level_id: LevelID) {
           setTimeout(deactivateExplosion, 1500);
         }
       }
+      if (active.element.id === "start-button" && Math.abs(active.posX - active.originX) < 10 && Math.abs(active.posY - active.originY) < 10) {
+        active.moveTo(active.posX, 599 - active.element.getBoundingClientRect().height);
+      }
       playSound(removedAnEntity ? collect! : drop!);
     }
 

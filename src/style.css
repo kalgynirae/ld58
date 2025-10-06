@@ -195,3 +195,13 @@ section {
 	from { transform: translateY(0px); }
 	to { transform: translateY(-800px); }
 }
+
+#levelNeutralEnding, #levelTrueEnding {
+	font-size: 1.2em;
+
+	button {
+		font-family: "Walter Turncoat";
+		font-size: 1.25em;
+		padding: 0.25em 0.75em;
+	}
+}

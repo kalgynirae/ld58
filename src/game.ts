@@ -82,6 +82,7 @@ function advanceLevel() {
       break;
     case GameState.NeutralEnding:
       setGameState(GameState.Level2);
+      updateCollectedCount(collectedCount = 7);
       activateLevel("level2");
       break;
     case GameState.TrueEnding:
@@ -89,6 +90,7 @@ function advanceLevel() {
       title_trash_entity?.reset();
       setGameState(GameState.TitleScreen);
       playMusic(music!);
+      updateCollectedCount(0);
       activateLevel("levelTitle");
       resetTrashBin();
       break;
@@ -550,3 +552,6 @@ function resetTrashBin() {
   trashbin.style.animation = "";
   trashbin.style.visibility = "visible";
 }
+
+const retryButton = document.querySelector("#retryButton") as HTMLElement;
+retryButton.addEventListener("click", (e) => advanceLevel());

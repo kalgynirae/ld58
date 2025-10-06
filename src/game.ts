@@ -347,7 +347,7 @@ function activateLevel(level_id: LevelID) {
         if (active.element.id === "bomb" && gameState === GameState.Level2Fire) {
           activateExplosion();
           setGameState(GameState.Level2Exploded);
-          setTimeout(deactivateExplosion, 2500);
+          setTimeout(deactivateExplosion, 1500);
         }
       }
       playSound(removedAnEntity ? collect! : drop!);
@@ -400,11 +400,6 @@ clickToStart.addEventListener("click", async (e) => {
   setGameState(GameState.TitleScreen);
 });
 
-function activateSurpriseWall() {
-  const surpriseWallElement = document.querySelector("#surprise-wall") as HTMLElement;
-  surpriseWallElement.style.height = "250px";
-}
-
 function activateFire() {
   const fireElement = document.querySelector("#fire") as HTMLElement;
   fireElement.style.visibility = "visible";
@@ -426,4 +421,13 @@ function activateExplosion() {
 function deactivateExplosion() {
   const fireElement = document.querySelector("#explosion") as HTMLElement;
   fireElement.style.visibility = "hidden";
+  activateSurpriseWall();
+}
+
+function activateSurpriseWall() {
+  const fireElement = document.querySelector("#spillage") as HTMLElement;
+  fireElement.style.visibility = "visible";
+
+  const surpriseWallElement = document.querySelector("#surprise-wall") as HTMLElement;
+  surpriseWallElement.style.height = "300px";
 }

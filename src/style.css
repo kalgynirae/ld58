@@ -92,6 +92,7 @@ body::after{
 	&.wall {
 		background-color: red;
 		z-index: 3;
+		visibility: hidden;
 	}
 
 	&.target {

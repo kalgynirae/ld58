@@ -324,7 +324,13 @@ function activateLevel(level_id: LevelID) {
         if (active.element.classList.contains("title-trash")) {
           active.element.style.visibility = "hidden";
         } else {
-          active.element.style.display = "none";
+          active.element.style.top = "460px";
+          const newLeft = 655 - (active.element.getBoundingClientRect().width / 2);
+          active.element.style.left = `${newLeft}px`;
+          let a = active;
+          setTimeout(() => {
+            a.element.style.display = "none";
+          }, 100);
         }
         current_entities.delete(active.id);
         removedAnEntity = true;
@@ -357,7 +363,7 @@ function activateLevel(level_id: LevelID) {
           return;
         }
       }
-      advanceLevel();
+      setTimeout(advanceLevel, 400);
     }
   });
 

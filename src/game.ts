@@ -388,6 +388,18 @@ function activateLevel(level_id: LevelID) {
     posXElement.textContent = String(event.pageX - gameWindowX);
     posYElement.textContent = String(event.pageY - gameWindowY);
   });
+
+  document.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.ctrlKey && event.key === 'd') {
+      event.preventDefault();
+      const debugElement = document.querySelector("#debug") as HTMLElement;
+      if (debugElement.style.visibility === "hidden") {
+        debugElement.style.visibility = "visible";
+      } else {
+        debugElement.style.visibility = "hidden";
+      }
+    }
+  });
 }
 
 // State transitions

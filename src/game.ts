@@ -477,4 +477,6 @@ function updateCollectedCount(newCount: number) {
   collectedCount = newCount;
   const collectedCountElement = document.querySelector("#collectedCount") as HTMLElement;
   collectedCountElement.textContent = String(collectedCount);
+  const collectedCountDisplayElement = document.querySelector("#collectedCountDisplay") as HTMLElement;
+  collectedCountDisplayElement.textContent = `You collected ${collectedCount} of ${totalCount} trash!`;
 }

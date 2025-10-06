@@ -20,7 +20,7 @@ body {
 	font-size: 2.0em;
 	margin-top: 2rem;
 	margin-bottom: 1rem;
-	.title-trash {
+	#title-trash {
 		z-index: 1;
 		position: relative;
 		display: inline-block;
@@ -95,6 +95,9 @@ body::after{
 
 	&.moveable {
 		cursor: pointer;
+	}
+
+	&.glide {
 		transition: top ease-out 0.1s, left ease-out 0.1s;
 	}
 

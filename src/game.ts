@@ -127,6 +127,7 @@ class Entity {
   }
 
   reset() {
+    this.element.classList.remove("glide");
     this.posX = this.originX;
     this.posY = this.originY;
     this.update();
@@ -246,7 +247,7 @@ function activateLevel(level_id: LevelID) {
   });
 
   // Title "Trash"
-  const tt_element = document.querySelector(".title-trash") as HTMLElement;
+  const tt_element = document.querySelector("#title-trash") as HTMLElement;
   title_trash_entity = new Entity(String(next_entity_id++), tt_element);
   const game_window_rect = (document.querySelector(".game-window") as HTMLElement).getBoundingClientRect();
   const tt_rect = title_trash_entity.element.getBoundingClientRect();
@@ -329,17 +330,19 @@ function activateLevel(level_id: LevelID) {
     let removedAnEntity = false;
     if (active != null) {
       if (active.rect().middlePointIntersects(target!.rect())) {
-        if (active.element.classList.contains("title-trash")) {
-          active.element.style.visibility = "hidden";
-        } else {
-          active.element.style.top = "460px";
-          const newLeft = 655 - (active.element.getBoundingClientRect().width / 2);
-          active.element.style.left = `${newLeft}px`;
-          let a = active;
-          setTimeout(() => {
+        active.element.classList.add("glide");
+        active.element.style.top = "460px";
+        const newLeft = 655 - (active.element.getBoundingClientRect().width / 2);
+        active.element.style.left = `${newLeft}px`;
+        let a = active;
+        setTimeout(() => {
+          if (a.element.id === "title-trash") {
+            a.element.style.visibility = "hidden";
+          } else {
             a.element.style.display = "none";
-          }, 100);
-        }
+          }
+        }, 100);
+
         current_entities.delete(active.id);
         removedAnEntity = true;
         updateCollectedCount(collectedCount + 1);
@@ -357,7 +360,12 @@ function activateLevel(level_id: LevelID) {
         }
       }
       if (active.element.id === "start-button" && Math.abs(active.posX - active.originX) < 10 && Math.abs(active.posY - active.originY) < 10) {
+        active.element.classList.add("glide");
         active.moveTo(active.posX, 599 - active.element.getBoundingClientRect().height);
+        let a = active;
+        setTimeout(() => {
+          a.element.classList.remove("glide");
+        }, 200);
       }
       playSound(removedAnEntity ? collect! : drop!);
     }
@@ -368,7 +376,7 @@ function activateLevel(level_id: LevelID) {
 
     if (removedAnEntity) {
       for (let m of current_entities.values()) {
-        if (m.moveable && !m.element.classList.contains("title-trash")) {
+        if (m.moveable && m.element.id !== "title-trash" && gameState !== GameState.Level2Exploded) {
           return;
         }
       }

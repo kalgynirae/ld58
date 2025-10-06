@@ -13,6 +13,7 @@ tsc -w |& sed 's/\o033\[2J\o033\[3J\o033\[H//g' &
 while sleep 0.1; do
   files=(
     audio/*
+    font/*
     img/*
     lib/*
     src/index.html

@@ -1,3 +1,9 @@
+@font-face {
+	font-family: "Walter Turncoat";
+	font-display: block;
+	src: url("WalterTurncoat-Regular.ttf") format("truetype");
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -5,11 +11,13 @@
 body {
 	background-color: black;
 	color: white;
+	font-size: 1.2rem;
 	padding: 0.5rem;
 }
 .title {
 	position: relative;
 	text-align: center;
+	font-size: 2.0em;
 	margin-top: 2rem;
 	margin-bottom: 1rem;
 	.title-trash {
@@ -35,6 +43,7 @@ body {
 	width: 800px;
 	height: 600px;
 	margin-inline: auto;
+	font-family: "Walter Turncoat", sans-serif;
 }
 
 .click-to-start {

@@ -16,7 +16,7 @@ validTransitions.set(null, [GameState.ClickToStart]);
 validTransitions.set(GameState.ClickToStart, [GameState.TitleScreen]);
 validTransitions.set(GameState.TitleScreen, [GameState.Level1]);
 validTransitions.set(GameState.Level1, [GameState.Level2]);
-validTransitions.set(GameState.Level2, [GameState.NeutralEnding, GameState.Level2Fire, GameState.Level2Exploded]);
+validTransitions.set(GameState.Level2, [GameState.NeutralEnding, GameState.Level2Fire]);
 validTransitions.set(GameState.Level2Fire, [GameState.NeutralEnding, GameState.Level2Exploded, GameState.Level2]);
 validTransitions.set(GameState.Level2Exploded, [GameState.TrueEnding]);
 validTransitions.set(GameState.NeutralEnding, [GameState.Level2]);
@@ -32,7 +32,21 @@ function setGameState(newState: GameState) {
 }
 setGameState(GameState.ClickToStart);
 
-function draggingAllowed(): boolean {
+function canMoveItems(): boolean {
+  switch (gameState) {
+    case GameState.TitleScreen:
+    case GameState.Level1:
+    case GameState.Level2:
+    case GameState.Level2Fire:
+    case GameState.Level2Exploded:
+    case GameState.TrueEnding:
+      return true;
+    default:
+      return false;
+  }
+}
+
+function canTrashItems(): boolean {
   switch (gameState) {
     case GameState.TitleScreen:
     case GameState.Level1:
@@ -145,6 +159,10 @@ class Entity {
   }
 
   moveBy(dx: number, dy: number) {
+    if (this.element.id == "finished-text") {
+      this.moveTo(this.posX + dx, this.posY + dy);
+      return true;
+    }
     const newX = this.posX + dx;
     const newY = this.posY + dy;
     const newRect = this.rect(newX, newY);
@@ -322,7 +340,7 @@ function activateLevel(level_id: LevelID) {
   let offsetY: number | null = null;
 
   document.addEventListener("mousedown", (event: MouseEvent) => {
-    if (!draggingAllowed()) return;
+    if (!canMoveItems()) return;
     const e = event.target as HTMLElement;
     if (e.dataset.id && current_entities.has(e.dataset.id)) {
       let entity = current_entities.get(e.dataset.id)!;
@@ -341,7 +359,12 @@ function activateLevel(level_id: LevelID) {
   document.addEventListener("mouseup", (event: MouseEvent) => {
     let removedAnEntity = false;
     if (active != null) {
-      if (active.rect().middlePointIntersects(target!.rect())) {
+      if (active.element.id == "finished-text") {
+        if (active.posX > 455 && active.posX < 475 && active.posY > -70 && active.posY < -50) {
+          playSound(finished!);
+        }
+      }
+      if (canTrashItems() && active.rect().middlePointIntersects(target!.rect())) {
         active.element.classList.add("glide");
         const newX = 655 - (active.element.getBoundingClientRect().width / 2);
         active.moveTo(newX, 460);
@@ -359,20 +382,20 @@ function activateLevel(level_id: LevelID) {
         updateCollectedCount(collectedCount + 1);
 
         if (active.element.id === "cigarette") {
+          setGameState(GameState.Level2Fire);
           activateSmoke();
           playSound(smoke!);
           setTimeout(() => {
             activateFire();
-            setGameState(GameState.Level2Fire);
             setTimeout(deactivateFire, 2500);
           }, 1200);
         }
 
         if (active.element.id === "bomb" && gameState === GameState.Level2Fire) {
+          setGameState(GameState.Level2Exploded);
           playSound(fuse!);
           setTimeout(() => {
             activateExplosion();
-            setGameState(GameState.Level2Exploded);
             setTimeout(deactivateExplosion, 1500);
           }, 1000);
         }
@@ -394,7 +417,7 @@ function activateLevel(level_id: LevelID) {
 
     if (removedAnEntity) {
       for (let m of current_entities.values()) {
-        if (m.moveable && m.element.id !== "title-trash") {
+        if (m.moveable && m.element.id !== "title-trash" && m.element.id !== "finished-text") {
           return;
         }
         if (m.element.id === "title-trash" && gameState === GameState.Level2Exploded) {
@@ -513,21 +536,17 @@ function initiateFlightSequence() {
   trashfront.style.animation = "vibrate 1.5s infinite";
   setTimeout(() => {
     thrusters.style.visibility = "hidden";
-    trashback.style.visibility = "hidden";
-    trashfront.style.visibility = "hidden";
+    trashbin.style.visibility = "hidden";
     trashback.style.animation = "";
     trashfront.style.animation = "";
   }, 8000);
-  const persistent = document.querySelector(".persistent") as HTMLElement;
-  persistent.style.animation = "takeoff 8s ease-in";
+  const trashbin = document.querySelector("#trashbin") as HTMLElement;
+  trashbin.style.animation = "takeoff 8s ease-in";
   setTimeout(() => playSound(blastoff!), 250);
 }
 
 function resetTrashBin() {
-  const persistent = document.querySelector(".persistent") as HTMLElement;
-  const trashback = document.querySelector("#trashback") as HTMLElement;
-  const trashfront = document.querySelector("#trashfront") as HTMLElement;
-  persistent.style.animation = "";
-  trashback.style.visibility = "visible";
-  trashfront.style.visibility = "visible";
+  const trashbin = document.querySelector("#trashbin") as HTMLElement;
+  trashbin.style.animation = "";
+  trashbin.style.visibility = "visible";
 }

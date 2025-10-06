@@ -10,6 +10,7 @@ let blastoff: AudioBuffer | null = null;
 let collect: AudioBuffer | null = null;
 let drop: AudioBuffer | null = null;
 let explosion: AudioBuffer | null = null;
+let finished: AudioBuffer | null = null;
 let flames: AudioBuffer | null = null;
 let fuse: AudioBuffer | null = null;
 let smoke: AudioBuffer | null = null;
@@ -28,6 +29,7 @@ async function loadMusicAndSounds() {
   collect = await load("collect.wav");
   drop = await load("drop.wav");
   explosion = await load("explosion.wav");
+  finished = await load("finished.wav");
   flames = await load("flames.wav");
   fuse = await load("fuse.wav");
   smoke = await load("smoke.wav");
@@ -63,7 +65,7 @@ function playMusic(buf: AudioBuffer) {
 
 function playSound(buf: AudioBuffer) {
   const gainNode = audioContext!.createGain();
-  gainNode.gain.value = 1.0;
+  gainNode.gain.value = 0.8;
   gainNode.connect(audioContext!.destination);
   const soundNode = new AudioBufferSourceNode(audioContext!, {
     buffer: buf,

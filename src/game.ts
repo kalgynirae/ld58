@@ -24,8 +24,8 @@ validTransitions.set(GameState.TrueEnding, [GameState.TitleScreen]);
 
 function setGameState(newState: GameState) {
   if ((validTransitions.get(gameState) ?? []).indexOf(newState) >= 0) {
-      gameState = newState;
-      gameStateDebugElement.textContent = GameState[gameState] ?? "OHONO";
+    gameState = newState;
+    gameStateDebugElement.textContent = GameState[gameState] ?? "OHONO";
   } else {
     throw new Error(`gameState cannot change to ${GameState[newState]} from ${GameState[gameState]}`);
   }
@@ -62,16 +62,20 @@ function advanceLevel() {
       break;
     case GameState.Level2Exploded:
       setGameState(GameState.TrueEnding);
+      playMusic(spacemusic!);
       activateLevel("levelTrueEnding");
       break;
     case GameState.NeutralEnding:
       setGameState(GameState.Level2);
       activateLevel("level2");
+      break;
     case GameState.TrueEnding:
       updateCollectedCount(0);
       title_trash_entity?.reset();
       setGameState(GameState.TitleScreen);
+      playMusic(music!);
       activateLevel("levelTitle");
+      break;
     default:
       console.log(`advanceLevel() called while gameState is ${GameState[gameState]}`);
       break;
@@ -431,7 +435,7 @@ const clickToStart = document.querySelector(".click-to-start") as HTMLElement;
 clickToStart.addEventListener("click", async (e) => {
   await audioLoading;
   initAudio();
-  startMusic();
+  playMusic(music!);
   clickToStart.style.display = "none";
   setGameState(GameState.TitleScreen);
 });
